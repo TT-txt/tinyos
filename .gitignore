@@ -1,3 +1,6 @@
+#the boot iso
+*.iso
+
 # Prerequisites
 *.d
 

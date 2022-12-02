@@ -1,14 +1,6 @@
-UNAME := $(shell uname)
-
-ifeq ($(UNAME),Linux)
-	CC=gcc -elf_i386
-	AS=as --32
-	LD=ld -m elf_i386
-else
-	CC=i386-elf-gcc
-	AS=i386-elf-as
-	LD=i386-elf-ld
-endif
+CC=gcc -elf_i386
+AS=yasm -f elf
+LD=ld -m elf_i386
 
 GFLAGS=
 CCFLAGS=-m32 -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Wstrict-aliasing
@@ -19,7 +11,7 @@ ASFLAGS=
 LDFLAGS=
 
 BOOTSECT_SRCS=\
-	src/stage0.S
+	src/bootloader.S
 
 BOOTSECT_OBJS=$(BOOTSECT_SRCS:.S=.o)
 
@@ -43,18 +35,21 @@ clean:
 	$(CC) -o $@ -c $< $(GFLAGS) $(CCFLAGS)
 
 %.o: %.S
-	$(AS) -o $@ -c $< $(GFLAGS) $(ASFLAGS)
+	$(AS) -o $@ $< $(GFLAGS) $(ASFLAGS)
 
 dirs:
 	mkdir -p bin
 
 bootsect: $(BOOTSECT_OBJS)
-	$(LD) -o ./bin/$(BOOTSECT) $^ -Ttext 0x7C00 --oformat=binary
+	$(LD) -o ./bin/$(BOOTSECT) $^ --Ttext 0x7C00 --oformat=binary
 
-kernel: $(KERNEL_OBJS)
-	$(LD) -o ./bin/$(KERNEL) $^ $(LDFLAGS) -Tsrc/link.ld
+#kernel: $(KERNEL_OBJS)
+#	$(LD) -o ./bin/$(KERNEL) $^ $(LDFLAGS) -Tsrc/link.ld
 
-iso: dirs bootsect kernel
+iso: dirs bootsect #kernel
 	dd if=/dev/zero of=boot.iso bs=512 count=2880
 	dd if=./bin/$(BOOTSECT) of=boot.iso conv=notrunc bs=512 seek=0 count=1
-	dd if=./bin/$(KERNEL) of=boot.iso conv=notrunc bs=512 seek=1 count=2048
+	#dd if=./bin/$(KERNEL) of=boot.iso conv=notrunc bs=512 seek=1 count=2048
+
+run: iso
+	qemu-system-i386 -drive format=raw,file=boot.iso
