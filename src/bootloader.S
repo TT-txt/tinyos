@@ -2,7 +2,6 @@ BITS 16
 GLOBAL _start
 
 _start:
-    org 
     hlt
 
 .halt:
