@@ -23,7 +23,7 @@ BOOTSECT=bootsect.bin
 KERNEL=kernel.bin
 ISO=boot.iso
 
-all: dirs bootsect kernel
+all: dirs bootsect #kernel
 
 clean:
 	rm -f ./**/*.o

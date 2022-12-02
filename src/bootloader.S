@@ -1,7 +1,8 @@
 BITS 16
-GLOBAL start
+GLOBAL _start
 
-start:
+_start:
+    org 
     hlt
 
 .halt:
