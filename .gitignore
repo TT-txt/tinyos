@@ -1,5 +1,7 @@
 #the boot iso
 *.iso
+#compiled shit
+*.bin
 
 # Prerequisites
 *.d
