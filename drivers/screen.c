@@ -1,5 +1,4 @@
 #include "screen.h"
-#include "../libs/strings.h"
 
 /* private functions */
 u32 getOffset(u8 row, u8 column);
@@ -45,16 +44,27 @@ void printChr(char chr)
     if (chr == '\n') {
         i32 missingColsToNewLine = (MAX_COLS - getCols(offset)) * 2;
         offset += missingColsToNewLine;
-        setVGAOffset(offset);
     } else if (chr == '\t') {
         offset += 8;
-        setVGAOffset(offset);
     } else {
         u8 *vga = (u8 *) VIDEO_MEMORY;
         vga[offset] = chr;
         vga[offset + 1] = WHITE_TEXT_BLACK_BACKGROUND;
-        setVGAOffset(offset + 2);
+        offset += 2;
     }
+    /* scrolling the screen */
+    if (offset >= MAX_COLS * MAX_ROWS * 2) {
+        for (u8 i = 1; i < MAX_ROWS; ++i) {
+            mem_cpy(getOffset(i, 0) + VIDEO_MEMORY,
+                    getOffset(i-1, 0) + VIDEO_MEMORY,
+                    MAX_COLS * 2);
+        }
+        char *lastLine = getOffset(MAX_ROWS - 1, 0) + VIDEO_MEMORY;
+        for (u8 i = 0; i < MAX_COLS * 2; ++i) 
+            lastLine[i] = 0;
+        offset -= 2 * MAX_COLS;
+    }
+    setVGAOffset(offset);
 }
 
 void printChrAtPos(char chr, u8 x, u8 y) 

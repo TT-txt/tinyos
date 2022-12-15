@@ -20,4 +20,8 @@ typedef u8 bool;
 
 #define NULL (0)
 
+u32 str_len(char *);
+void mem_cpy(char *src, char *dest, u32 nbBytes);
+void strReverse(char *);
+
 #endif
