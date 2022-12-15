@@ -1,6 +1,6 @@
 C_SRCs=$(wildcard kernel/*.c drivers/*.c libs/*.c apps/*.c)
 HEADERS=$(wildcard kernel/*.h drivers/*.h libs/*.h apps/*.h)
-OBJs=$(C_SRCs:.c=.o)
+OBJs=$(C_SRCs:.c=.o kernel/interrupts.o)
 #cf. https://wiki.osdev.org/GCC_Cross-Compiler
 CC=i386-elf-gcc#home made cross compiler
 LD=i386-elf-ld#home made cross linker
@@ -18,10 +18,11 @@ kernel.elf: bootloader/kernelEntry.o ${OBJs}
 	${LD} -o $@ -Ttext 0x1000 $^
 
 run: osImg.bin
-	qemu-system-i386 -fda osImg.bin
+	qemu-system-i386 -drive file=osImg.bin,format=raw,index=0,if=floppy
 
 debug: osImg.bin kernel.elf
-	qemu-system-i386 -s -fda osImg.bin &
+#it is a bit broken atm
+	qemu-system-i386 -s -drive file=osImg.bin,format=raw,index=0,if=floppy -d guest_errors,int &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
 %.o: %.c ${HEADERS}
