@@ -40,3 +40,13 @@ void iToA(i32 n, char *str) {
 
     /* TODO: implement "reverse" */
 }
+
+void append(char *str, char *appendix) 
+{
+    u32 appendPoint = str_len(str);
+    u32 size = str_len(appendix);
+    for (u32 i = 0; i < size; ++i) {
+        str[appendPoint + i] = appendix[i];
+    }
+    str[appendPoint + size - 1] = '\0';
+}

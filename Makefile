@@ -5,7 +5,7 @@ OBJs=$(C_SRCs:.c=.o kernel/interrupts.o)
 CC=i386-elf-gcc#home made cross compiler
 LD=i386-elf-ld#home made cross linker
 GDB=i386-elf-gdb#home made cross debugger
-C_FLAGS=-g -ffreestanding -O2 -pedantic -Wall -Wextra -std=c99
+C_FLAGS=-g -ffreestanding -O2 -pedantic -Wall -Wextra -std=c99 -nostdlib
 
 osImg.bin: bootloader/boot.bin kernel.bin
 	cat $^ > osImg.bin
