@@ -1,11 +1,11 @@
 #include "../drivers/screen.h"
-#include "../libs/utils.h" /* technicaly not necessary but we're certain it's here */
+#include "../apps/cliTools.h"
+
 
 void main()
 {
     clearScreen();
-    for (int i = 0; i < 4000; ++i) {
-        printChr('F');
-    }
-    printStr("A\nB");
+    printStr("Hello, and Welcome to\n");
+    printBanner();
+    printStr("The future of the operating system, living like it's 1984\n");
 }

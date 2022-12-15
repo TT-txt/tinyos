@@ -40,9 +40,9 @@ void clearScreen()
 
 void printChr(char chr)
 {
-    i32 offset = getVGAOffset();
+    u32 offset = getVGAOffset();
     if (chr == '\n') {
-        i32 missingColsToNewLine = (MAX_COLS - getCols(offset)) * 2;
+        u32 missingColsToNewLine = (MAX_COLS - getCols(offset)) * 2;
         offset += missingColsToNewLine;
     } else if (chr == '\t') {
         offset += 8;
@@ -55,11 +55,11 @@ void printChr(char chr)
     /* scrolling the screen */
     if (offset >= MAX_COLS * MAX_ROWS * 2) {
         for (u8 i = 1; i < MAX_ROWS; ++i) {
-            mem_cpy(getOffset(i, 0) + VIDEO_MEMORY,
-                    getOffset(i-1, 0) + VIDEO_MEMORY,
+            mem_cpy((i8 *) (getOffset(i, 0) + VIDEO_MEMORY),
+                    (i8 *) (getOffset(i-1, 0) + VIDEO_MEMORY),
                     MAX_COLS * 2);
         }
-        char *lastLine = getOffset(MAX_ROWS - 1, 0) + VIDEO_MEMORY;
+        char *lastLine = (i8 *) (getOffset(MAX_ROWS - 1, 0) + VIDEO_MEMORY);
         for (u8 i = 0; i < MAX_COLS * 2; ++i) 
             lastLine[i] = 0;
         offset -= 2 * MAX_COLS;

@@ -1,5 +1,5 @@
-C_SRCs=$(wildcard kernel/*.c drivers/*.c libs/*.c)
-HEADERS=$(wildcard kernel/*.h drivers/*.h libs/*.h)
+C_SRCs=$(wildcard kernel/*.c drivers/*.c libs/*.c apps/*.c)
+HEADERS=$(wildcard kernel/*.h drivers/*.h libs/*.h apps/*.h)
 OBJs=$(C_SRCs:.c=.o)
 #cf. https://wiki.osdev.org/GCC_Cross-Compiler
 CC=i386-elf-gcc#home made cross compiler
