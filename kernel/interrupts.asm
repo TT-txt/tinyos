@@ -1,4 +1,5 @@
 [extern ISRHandler]
+[extern IRQHandler]
 
 ; thanks to https://wiki.osdev.org/ISR
 isrWrapper:
@@ -23,7 +24,28 @@ isrWrapper:
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number
 	sti
 	iret ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
-	
+
+;same as for isr
+irqWrapper:
+    pusha 
+    mov ax, ds
+    push eax
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    call IRQHandler
+    pop ebx  ;Different than the ISR code
+    mov ds, bx
+    mov es, bx
+    mov fs, bx
+    mov gs, bx
+    popa
+    add esp, 8
+    sti
+    iret 
+
 ; We don't get information about which interrupt was caller
 ; when the handler is run, so we will need to have a different handler
 ; for every interrupt.
@@ -31,7 +53,7 @@ isrWrapper:
 ; don't, so we will push a dummy error code for those which don't, so that
 ; we have a consistent stack for all of them.
 
-; First make the ISRs global
+; ISR globals
 global isr0
 global isr1
 global isr2
@@ -64,6 +86,23 @@ global isr28
 global isr29
 global isr30
 global isr31
+;IRQs global
+global irq0
+global irq1
+global irq2
+global irq3
+global irq4
+global irq5
+global irq6
+global irq7
+global irq8
+global irq9
+global irq10
+global irq11
+global irq12
+global irq13
+global irq14
+global irq15
 
 ; 0: Divide By Zero Exception
 isr0:
@@ -282,3 +321,99 @@ isr31:
     push byte 0
     push byte 31
     jmp isrWrapper
+
+irq0:
+	cli
+	push byte 0
+	push byte 32
+	jmp irqWrapper
+
+irq1:
+	cli
+	push byte 1
+	push byte 33
+	jmp irqWrapper
+
+irq2:
+	cli
+	push byte 2
+	push byte 34
+	jmp irqWrapper
+
+irq3:
+	cli
+	push byte 3
+	push byte 35
+	jmp irqWrapper
+
+irq4:
+	cli
+	push byte 4
+	push byte 36
+	jmp irqWrapper
+
+irq5:
+	cli
+	push byte 5
+	push byte 37
+	jmp irqWrapper
+
+irq6:
+	cli
+	push byte 6
+	push byte 38
+	jmp irqWrapper
+
+irq7:
+	cli
+	push byte 7
+	push byte 39
+	jmp irqWrapper
+
+irq8:
+	cli
+	push byte 8
+	push byte 40
+	jmp irqWrapper
+
+irq9:
+	cli
+	push byte 9
+	push byte 41
+	jmp irqWrapper
+
+irq10:
+	cli
+	push byte 10
+	push byte 42
+	jmp irqWrapper
+
+irq11:
+	cli
+	push byte 11
+	push byte 43
+	jmp irqWrapper
+
+irq12:
+	cli
+	push byte 12
+	push byte 44
+	jmp irqWrapper
+
+irq13:
+	cli
+	push byte 13
+	push byte 45
+	jmp irqWrapper
+
+irq14:
+	cli
+	push byte 14
+	push byte 46
+	jmp irqWrapper
+
+irq15:
+	cli
+	push byte 15
+	push byte 47
+	jmp irqWrapper
