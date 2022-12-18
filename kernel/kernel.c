@@ -13,9 +13,8 @@ void main()
     ISRInstall();
     initTimer(50);
     KBInit();
-    clearScreen();
-    ISRInstall();
     __asm__ volatile("sti");
+    clearScreen();
     printStr("Hello, and Welcome to\n");
     printBanner();
     printStr("The future of the operating system, living like it's 1984\n");

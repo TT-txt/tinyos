@@ -31,11 +31,10 @@ static void KBCallback()
         /* TODO remove last shit from buffer */
     } else if (keycode == ENTER) {
         /*Todo : submit command I guess */
-    } else if (keycode <= 0x39 + 0x80) {
-        /* TODO Implement history ?, up key */
     } else {
-        char chr = keycodeToAscii[keycode];
-        char str[2] = {chr, '\0'};
-        append(userInput, str);
+        char chr = keycodeToAscii[(int)keycode];
+        append(userInput, chr);
+        printStr(userInput);
+        printChr('\n');
     }
 }
