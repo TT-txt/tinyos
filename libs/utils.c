@@ -9,13 +9,6 @@ u32 str_len(char *str)
     return result;
 }
 
-void mem_cpy(char *src, char *dest, u32 nbBytes)
-{
-    for (u32 i = 0; i < nbBytes; ++i) {
-        *dest++ = *src++;
-    }
-}
-
 void strReverse(char *str)
 {
     char temp;

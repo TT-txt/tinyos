@@ -36,4 +36,4 @@ debug: osImg.bin kernel.elf
 
 clean:
 	rm -rf *.bin *.dis *.o osImg.bin *.elf
-	rm -rf kernel/*.o bootloader/*.bin drivers/*.o bootloader/*.o libs/*.o
+	rm -rf kernel/*.o bootloader/*.bin drivers/*.o bootloader/*.o libs/*.o apps/*.o

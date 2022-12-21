@@ -28,7 +28,6 @@ typedef u8 bool;
 
 /* std lib functions remade */
 u32 str_len(char *);
-void mem_cpy(char *src, char *dest, u32 nbBytes);
 void strReverse(char *);
 void iToA(i32, char*);
 void append(char *, char);
