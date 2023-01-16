@@ -32,6 +32,22 @@ void strReverse(char *str)
     }
 }
 
+u32 wordCount(char *str, char del)
+{
+    if (*str == '\0')
+        return 0;
+    
+    u32 result = 1;
+    bool stringDetected = false;
+    while(*str++ != '\0') {
+        if (*str == '\"')
+            stringDetected = !stringDetected;
+        if (*str == del && *(str+1) != del && !stringDetected)
+            result++;
+    }
+    return result;
+}
+
 void iToA(i32 n, char *str) {
     int i, sign;
     if ((sign = n) < 0) n = -n;
