@@ -29,7 +29,7 @@ void mem_set(u8 *dest, u8 value, u32 len)
 u32 malloc_t(u32 size, int align, u32 *addr)
 {
     u32 result;
-    if (freeMem.len != 0) {
+    if (freeMem.len) {
         /* checking if we can't use a freed position */
         linkedMemBlock *temp = freeMem.head;
         while (temp != NULL) {

@@ -9,6 +9,18 @@ u32 str_len(char *str)
     return result;
 }
 
+i8 str_cmp(char *str1, char *str2)
+{
+    while ((*str1 != '\0' && *str2 != '\0') && *str1 == *str2) {
+        *str1+=1;
+        *str2+=1;
+    }
+    if (*str1 == *str2)
+        return 0;
+    else
+        return *str1 - *str2;
+}
+
 void strReverse(char *str)
 {
     char temp;

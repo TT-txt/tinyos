@@ -16,3 +16,15 @@ void printBanner()
     printStr("|      ' '   .'|  '/|  |   |  |           .'   \\_.'   \n");
     printStr("|____.'   `-'  `--' '--'   '--'                       \n");
 }
+
+void userInputHandler(char *buff)
+{
+    /*TODO: implement str split or something */
+    if(!str_cmp(buff, "HELP")) {
+        printStr("WIKI");
+    } else {
+        printStr("JuniOs: commande inconnue: ");
+        printStr(buff);
+        printStr("\nPour obtenir une liste des commandes disponnibles, entrez \"HELP\"");
+    }
+}

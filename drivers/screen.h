@@ -17,5 +17,6 @@ void printChr(char);
 void printChrAtPos(char, u8, u8);
 void printStr(char *);
 void printStrAtPos(char *, u8, u8);
+void removeLastChar();
 
 #endif

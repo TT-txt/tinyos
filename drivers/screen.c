@@ -67,6 +67,15 @@ void printChr(char chr)
     setVGAOffset(offset);
 }
 
+void removeLastChar()
+{
+    u32 offset = getVGAOffset() - 2;
+    u8 *vga = (u8 *) VIDEO_MEMORY;
+    vga[offset] = ' ';
+    vga[offset + 1] = WHITE_TEXT_BLACK_BACKGROUND;
+    setVGAOffset(offset);
+}
+
 void printChrAtPos(char chr, u8 x, u8 y) 
 {
     i32 offset = getOffset(y, x);

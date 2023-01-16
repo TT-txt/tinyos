@@ -7,7 +7,7 @@ void mem_set(u8 *, u8, u32);
 u32 malloc_t(u32, int, u32 *);
 void free_t(u32);
 
-/* memory saved list */
+/* memory saved list - TODO: maybe remove the prev */
 typedef struct {
     void *prev;
     void *next;
