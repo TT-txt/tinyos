@@ -26,11 +26,6 @@ typedef u8 bool;
 #define low16(addr) (u16)((addr) & 0xFFFF)
 #define high16(addr) (u16)(((addr) >> 16) & 0xFFFF)
 
-/* std lib functions remade */
-u32 str_len(char *);
-i8 str_cmp(char *, char *);
-void strReverse(char *);
 void iToA(i32, char*);
-u32 wordCount(char *, char);
-void append(char *, char);
+
 #endif

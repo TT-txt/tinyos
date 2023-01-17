@@ -2,6 +2,7 @@
 #define __SCREEN__
 #include "./ports.h"
 #include "../libs/memory.h"
+#include "../libs/strings.h"
 
 /* Constants definitions */
 #define VIDEO_MEMORY 0xb8000
