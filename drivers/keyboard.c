@@ -51,7 +51,7 @@ static void KBCallback()
         userInput[0] = '\0';
         userInputLength = 0;
         printStr("\nuser@JuniOs:~$");
-    /*needs a fix*/
+    /*needs a fix, idk why but not working */
     } else if(keycode == UP_ARROW && userInputLength == 0 && lastInputLength != 0) {
         mem_cpy(lastCommand, userInput, lastInputLength);
         userInputLength = lastInputLength;

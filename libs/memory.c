@@ -30,7 +30,7 @@ u32 malloc_t(u32 size, int align, u32 *addr)
 {
     u32 result;
     if (freeMem.len) {
-        /* checking if we can't use a freed position */
+        /* checking if we can't use a freed position*/
         linkedMemBlock *temp = freeMem.head;
         while (temp != NULL) {
             if (temp->size <= size) {
@@ -48,7 +48,7 @@ u32 malloc_t(u32 size, int align, u32 *addr)
             }
             temp = temp->next;
         }
-    } 
+    }
     if (align == 1 && (freeMemPosition & 0xFFFFF000)) {
         freeMemPosition &= 0xFFFFF000;
         freeMemPosition += 0x1000;
@@ -57,6 +57,7 @@ u32 malloc_t(u32 size, int align, u32 *addr)
         *addr = freeMemPosition;
     result = freeMemPosition;
     freeMemPosition += size;
+    /*Beneath cannot work. Dumb*/
     linkedMemBlock *newMemBlock = craftMemBlock(size, result);
     appendMemBlock(&allocatedMem, newMemBlock);
     return result;
@@ -145,6 +146,8 @@ void removeMemBlock(linkedMemList *base, linkedMemBlock *block)
     }
 }
 
+/*THAT IS NOT WORKING, NEEDS FIX*/
+// https://www.programiz.com/c-programming/c-structures-pointers
 linkedMemBlock *craftMemBlock(u32 size, u32 position)
 {
     u32 physicalAddr;

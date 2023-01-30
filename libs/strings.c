@@ -71,7 +71,35 @@ u32 biggestWord(char *str, char del)
     return biggest;
 }
 
+char *getNthWord(char *str, char del, u32 pos) {
+    u32 startIndex = 0;
+    u32 wordNb = 0;
+    u32 size = 0;
+    /*first, we're retrieving the starting index of the wanted word*/
+    while (wordNb < pos && *(str+startIndex) != '\0') {
+        if (*(str+startIndex) == del) {
+            wordNb+=1;
+        }
+        startIndex+=1;
+    }
+    /*then, we retrieve the size of the said word*/
+    while (*(str+startIndex+size) != del && *(str+startIndex+size) != '\0') {
+        size+=1;
+    }
+    /*allocating memory to save the word*/
+    u32 temp;
+    printStr("Before malloc");
+    char *result = (char *) malloc_t(size, 1, &temp);
+    printStr("after");
+    /*copying it*/
+    for (u32 i = startIndex; i < startIndex + size; ++i) {
+        result[i - startIndex] = str[i];
+    }
+    return result;
+}
+
 /* ⚠️ -- UNDER CONSTRUCTION -- ⚠️ */
+/*
 char **str_split(char *str, char del)
 {
     u32 memPos;
@@ -85,10 +113,9 @@ char **str_split(char *str, char del)
             mem_cpy(result[i-1], temp, i);
             i = 0;
             temp[0] = '\0';
-            /* TODO: reset here temp */
         } else {
             temp[i++] = *str;
         }
     }
     return result;
-}
+}*/
