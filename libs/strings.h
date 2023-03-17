@@ -4,14 +4,15 @@
 #include "utils.h"
 #include "memory.h"
 
-/* std lib strings functions remade */
+/*Functions related to strings (no joke)*/
 u32 str_len(char *);
 i8 str_cmp(char *, char *);
 void strReverse(char *);
 void append(char *, char);
 u32 wordCount(char *, char);
 u32 nthWordSize(char *, char, u32);
-char **str_split(char *, char);
+char *getNthWord(char *, char , u32);
+
 void hex_to_ascii(int ,char *);
 
 #endif

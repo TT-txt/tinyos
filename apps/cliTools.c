@@ -19,8 +19,13 @@ void printBanner()
 
 void userInputHandler(char *buff)
 {
+    u32 wordNumber = wordCount(buff, ' ');
+    if (wordNumber == 0) {
+        printStr("No command entered...\n");
+    }
+    char *firstWord = getNthWord(buff, ' ', 0);
     /*TODO: implement str split or something */
-    if(!str_cmp(buff, "HELP")) {
+    if(!str_cmp(firstWord, "HELP")) {
         printStr("WIKI");
     } else {
         printStr("JuniOs: commande inconnue: ");
