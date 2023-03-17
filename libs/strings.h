@@ -12,5 +12,6 @@ void append(char *, char);
 u32 wordCount(char *, char);
 u32 nthWordSize(char *, char, u32);
 char **str_split(char *, char);
+void hex_to_ascii(int ,char *);
 
 #endif

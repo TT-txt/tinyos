@@ -92,3 +92,23 @@ char **str_split(char *str, char del)
     }
     return result;
 }
+
+void hex_to_ascii(int n, char *str) {
+    append(str, '0');
+    append(str, 'x');
+    char zeros = 0;
+
+    u32 tmp;
+    int i;
+    for (i = 28; i > 0; i -= 4) {
+        tmp = (n >> i) & 0xF;
+        if (tmp == 0 && zeros == 0) continue;
+        zeros = 1;
+        if (tmp > 0xA) append(str, tmp - 0xA + 'a');
+        else append(str, tmp + '0');
+    }
+
+    tmp = n & 0xF;
+    if (tmp >= 0xA) append(str, tmp - 0xA + 'a');
+    else append(str, tmp + '0');
+}
