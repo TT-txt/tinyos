@@ -87,10 +87,7 @@ char *getNthWord(char *str, char del, u32 pos) {
         size+=1;
     }
     /*allocating memory to save the word*/
-    u32 temp;
-    printStr("Before malloc");
-    char *result = (char *) malloc_t(size, 1, &temp);
-    printStr("after");
+    char *result = (char *) mallok(size);
     /*copying it*/
     for (u32 i = startIndex; i < startIndex + size; ++i) {
         result[i - startIndex] = str[i];
@@ -103,13 +100,13 @@ char *getNthWord(char *str, char del, u32 pos) {
 char **str_split(char *str, char del)
 {
     u32 memPos;
-    char **result = (char **) malloc_t(sizeof(char *), 1, &memPos);
+    char **result = (char **) mallok(sizeof(char *), 1, &memPos);
     u32 maxWordSize = biggestWord(str, del);
     u32 i = 0;
-    char *temp = (char *) malloc_t(maxWordSize, 1, &memPos);
+    char *temp = (char *) mallok(maxWordSize, 1, &memPos);
     while (*str++ != '\0') {
         if (*str == del) {
-            result[i] = (char *) malloc_t((++i) * sizeof(char), 1, &memPos);
+            result[i] = (char *) mallok((++i) * sizeof(char), 1, &memPos);
             mem_cpy(result[i-1], temp, i);
             i = 0;
             temp[0] = '\0';

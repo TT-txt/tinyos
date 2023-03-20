@@ -15,6 +15,6 @@ initProtected:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    mov ebp, 0x90000 ;updating the stack position to free space
+    mov ebp, 0x900000 ;updating the stack position to free space
     mov esp, ebp
     call MAIN_PROTECTED
