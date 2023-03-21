@@ -28,7 +28,7 @@ void userInputHandler(char *buff)
     char *firstWord = words[0];
     if(!str_cmp(firstWord, "HELP")) {
         printStr("WIKI");
-    } else if(str_cmp(firstWord, "ADD")) {
+    } else if(!str_cmp(firstWord, "ADD")) {
         if ((wordNumber) != 3) {
             printStr("Pour utiliser la commande ADD, entrez ADD ainsi que deux nombres.\n");
             printStr("Exemple: ADD 8.3 -5.6");
@@ -36,15 +36,13 @@ void userInputHandler(char *buff)
             i64 num1 = (i64) strToL(words[1]);
             i64 num2 = (i64) strToL(words[2]);
             i64 res = num1 + num2;
-            char *buff = mallok(10 * sizeof(CALCPRES));
+            //char *buf = mallok(10 * sizeof(CALCPRES));
             //gcvt(res, CALCPRES-1, buff);
-            printStr("\n");
             printStr(words[1]);
             printStr(" + ");
             printStr(words[2]);
             printStr(" = ");
-            printStr(buff);
-            printStr("\n");
+            //printStr(buff);
         }
     }
     else {
