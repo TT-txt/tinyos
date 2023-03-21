@@ -4,6 +4,7 @@
 #include "idt.h"
 #include "timer.h"
 #include "../drivers/keyboard.h"
+#include "../libs/memory.h"
 
 //https://github.com/cfenollosa/os-tutorial
 
@@ -18,5 +19,5 @@ void main()
     printStr("Hello, and Welcome to\n");
     printBanner();
     printStr("The future of the operating system, living like it's 1984\n");
-    printStr("user@JuniOs:~$");
+    printStr("user@JuniOs:~$\n");
 }

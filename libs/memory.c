@@ -1,6 +1,5 @@
 #include "memory.h"
 
-/* CANT BE USED - size issues
 #define MAXEXP 32
 #define MINEXP 8
 #define MAXCOMPLETE 5
@@ -9,8 +8,8 @@ i32 completePages[MAXEXP];
 static bool memInit = 0;
 static u16 pageSize = 4096;
 static u16 pageCount = 16;
-blockSize = sizeof(memBlock);
-*/
+u32 blockSize = sizeof(memBlock);
+
 
 /* Global variable */
 /* This is where we have some free memory, as the kernel starts at 0x1000 */
@@ -33,20 +32,6 @@ void mem_set(u8 *dest, u8 value, u32 len)
     }
 }
 
-u32 mallok(u32 size /*int align, u32 *physicalPos*/) {
-    if (freeMemPosition & 0xFFFFF000) {
-        freeMemPosition &= 0xFFFFF000;
-        freeMemPosition += 0x1000;
-    }
-    //if (physicalPos) *physicalPos = freeMemPos;
-    u32 position = freeMemPosition;
-    freeMemPosition += size;
-    return position;
-}
-
-
-/* CANT BE USED - RIP */
-/*
 // utilities to manage memory 
 static inline void lockMemory()
 {
@@ -95,7 +80,7 @@ static inline void insertBlockAt(memBlock *block, i32 index)
 {
     i32 realIndex;
     if (index < 0) {
-        realIndex = getExp(block->usedSize - blockSize);
+        realIndex = getExp(block->allocatedSize - blockSize);
         if (realIndex < MINEXP) realIndex = MINEXP;
     } else {
         realIndex = index;
@@ -119,7 +104,7 @@ static inline memBlock *split(memBlock *block)
     newBlock->splitRight = block->splitRight;
     if (newBlock->splitRight != NULL) newBlock->splitRight->splitLeft = newBlock;
     block->splitRight = newBlock;
-    block->allocatedSize -= newBlock->usedSize;
+    block->allocatedSize -= newBlock->allocatedSize;
     insertBlockAt(newBlock, -1);
     return newBlock;
 }
@@ -227,199 +212,25 @@ void freek(void *ptr)
     if (block->splitLeft == NULL && block->splitRight == NULL) {
         if (completePages[index] == MAXCOMPLETE) {
             u32 page = block->allocatedSize / pageSize;
-            if (block->allocatedSize % pageSize != 0) page = pageCount;
+            if (block->allocatedSize % pageSize != 0) page +=1;
+            if (page < pageCount) page = pageCount;
             freePage(block, page);
             unlockMemory();
             return;
         }
         completePages[index] += 1;
     }
+    insertBlockAt(block, index);
     unlockMemory();
 }
 
-u32 malloc_t(u32 size, int align, u32 *addr)
-{
-    u32 result;
-    if (freeMem.len) {
-        linkedMemBlock *temp = freeMem.head;
-        while (temp != NULL) {
-            if (temp->size <= size) {
-                result = temp->position;
-                *addr = temp->position;
-                if (temp->size == size) {
-                    removeMemBlock(&freeMem, temp);
-                } else {
-                    temp->size -= size;
-                    temp->position += size;
-                }
-                linkedMemBlock *newMemBlock = craftMemBlock(size, result);
-                appendMemBlock(&allocatedMem, newMemBlock);
-                return result;
-            }
-            temp = temp->next;
-        }
-    }
-    if (align == 1 && (freeMemPosition & 0xFFFFF000)) {
-        freeMemPosition &= 0xFFFFF000;
-        freeMemPosition += 0x1000;
-    }
-    if (addr)
-        *addr = freeMemPosition;
-    result = freeMemPosition;
-    freeMemPosition += size;
-    linkedMemBlock *newMemBlock = craftMemBlock(size, result);
-    appendMemBlock(&allocatedMem, newMemBlock);
-    return result;
-}
-
-void free_t(u32 position)
-{
-    linkedMemBlock *toRemove = allocatedMem.head;
-    if (toRemove == NULL)
-        return;
-    while (toRemove != NULL) {
-        if (toRemove->position != position)
-            toRemove = toRemove->next;
-    }
-    if (toRemove->position == position) {
-        removeMemBlock(&allocatedMem, toRemove);
-        appendMemBlock(&freeMem, toRemove);
-    }
-}
-
-linkedMemBlock *getMemBlockAt(linkedMemList base, u32 index)
-{
-    linkedMemBlock *result;
-    if (index > base.len) {
-        result = NULL;
-    } else if (index < base.len / 2) {
-        result = base.head;
-        for (u32 i = 0; i < index; ++i) {
-            if (result == NULL) return NULL;
-            result = result->next;
-        }
-    } else {
-        result = base.tail;
-        for (u32 i = 0; i < index; ++i) {
-            if (result == NULL) return NULL;
-            result = result->prev;
-        }
-    }
-    return result;
-}
-
-void appendMemBlock(linkedMemList *base, linkedMemBlock *block)
-{
-    if (base == NULL || block == NULL || base->head == NULL || base->tail == NULL)
-        return;
-    block->next = NULL;
-    base->len++;
-    if (base->len == 0) {
-        base->head = block;
-        base->tail = block;
-        block->prev = NULL;
-    } else {
-        linkedMemBlock *temp = base->tail;
-        temp->next = block;
-        block->prev = temp;
-        block->next = NULL;
-    }
-}
-
-void removeMemBlock(linkedMemList *base, linkedMemBlock *block)
-{
-    if (block == NULL || base->len == 0 || base->head == NULL || base->tail == NULL)
-        return;
-    base->len--;
-    if (block == base->head) {
-        linkedMemBlock *after = block->next;
-        base->head = after;
-        if (after != NULL)
-            after->prev = NULL;
-    } else if (block == base->tail) {
-        linkedMemBlock *before = block->prev;
-        base->tail = before;
-        if (before != NULL)
-            before->next = NULL;
-    } else {
-        linkedMemBlock *before = block->prev;
-        linkedMemBlock *after = block->next;
-        if (block->next != NULL || block->prev != NULL) {
-            after->prev = block->prev;
-            before->next = block->next;
-        }
-    }
-}
-linkedMemBlock *craftMemBlock(u32 size, u32 position)
-{
-    u32 physicalAddr;
-    linkedMemBlock *result = (linkedMemBlock *) malloc_t(sizeof(linkedMemBlock *), 1, &physicalAddr);
-    result->size = size;
-    result->position = position;
-    result->prev = NULL;
-    result->next = NULL;
-    return result;
-}*/
-
-/* --- RANDOM PROTO CODE - USELESS --- */
-/* Inserting while containing the position order
-void insertAllocatedMemBlock(linkedMemList *base, linkedMemBlock *block)
-{
-    if (base == NULL || block == NULL || base->head == NULL || base->tail == NULL)
-        return;
-    if (base->len == 0) {
-        base->len = 1;
-        base->head = block;
-        base->tail = block;
-    } else {
-        linkedMemBlock *before = base->head;
-        linkedMemBlock *after = before->next;
-        for (u32 i = 0; i < base->len; ++i) {
-            if (after== NULL) {
-                before->next = block;
-                base->len+=1;
-                break;
-            } else if ( (before->position <= block->position) & (after->position > block->position) ) {
-                    after->prev = block;
-                    before->next = block;
-                    base->len++;
-                    break;
-            } else {
-                before = after;
-                after = before->next;
-            }
-        }
-    }
-}
-*/
-
-/* inserting while keeping the memory size order
-void insertFreeMemBlock(linkedMemList *base, linkedMemBlock *block)
-{
-    if (base == NULL || block == NULL || base->head == NULL || base->tail == NULL)
-        return;
-    if (base->len == 0) {
-        base->len = 1;
-        base->head = block;
-        base->tail = block;
-    } else {
-        linkedMemBlock *before = base->head;
-        linkedMemBlock *after = before->next;
-        for (u32 i = 0; i < base->len; ++i) {
-            if (after== NULL) {
-                before->next = block;
-                base->len+=1;
-                break;
-            } else if ( (before->size <= block->size) & (after->size > block->size) ) {
-                    after->prev = block;
-                    before->next = block;
-                    base->len++;
-                    break;
-            } else {
-                before = after;
-                after = before->next;
-            }
-        }
-    }
-}
-*/
+//u32 mallok(u32 size /*int align, u32 *physicalPos*/) {
+//    if (freeMemPosition & 0xFFFFF000) {
+//        freeMemPosition &= 0xFFFFF000;
+//        freeMemPosition += 0x1000;
+//    }
+//    //if (physicalPos) *physicalPos = freeMemPos;
+//    u32 position = freeMemPosition;
+//    freeMemPosition += size;
+//    return position;
+//}

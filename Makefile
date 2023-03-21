@@ -11,11 +11,11 @@ osImg.bin: bootloader/boot.bin kernel.bin
 	cat $^ > osImg.bin
 
 kernel.bin: bootloader/kernelEntry.o ${OBJs}
-	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
+	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary -T linker.ld
 
 #for debug
 kernel.elf: bootloader/kernelEntry.o ${OBJs}
-	${LD} -o $@ -Ttext 0x1000 $^
+	${LD} -o $@ -Ttext 0x1000 $^ -Tsrc/link.ld
 
 run: osImg.bin
 	qemu-system-i386 -drive file=osImg.bin,format=raw,index=0,if=floppy
