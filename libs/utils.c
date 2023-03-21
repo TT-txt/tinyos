@@ -13,3 +13,11 @@ void iToA(i32 n, char *str) {
 
     /* TODO: implement "reverse" */
 }
+
+f64 powk(f64 base, i64 exp)
+{
+    if (exp < 0) return 1 / powk(base, -exp);
+    else if (exp == 1) return base;
+    else if (exp == 0) return 1;
+    else return base * powk(base, exp-1);
+}

@@ -156,6 +156,37 @@ string *strSplit(string toSplit, char del)
     return res;
 }
 
+static i32 charIndex(char *str, char searched)
+{
+    i32 res = 0;
+    while(str[res] != searched && str[res] != '\0') {
+        res++;
+    }
+    return str[res] == '\0' ? -1 : res;
+}
+
+f64 strToL(char *str)
+{
+    if (str == NULL || str[0] == '\0')
+        return 0;
+    f64 res = 0;
+    bool neg = str[0] == '-';
+    u32 index = neg ? 1 : 0;
+    i32 wholePart = charIndex(str, '.');
+    if (wholePart == -1) wholePart = str_len(str);
+    while (str[index] != '\0') {
+        if (str[index] == '.') {
+            wholePart++;
+        } else {
+            
+            res += (str[index] - 48) * powk(10, wholePart - 1 - index);
+        }
+        index++;
+    }
+    res = neg ? res * -1 : res;
+    return res;
+}
+
 void hex_to_ascii(int n, char *str) {
     append(str, '0');
     append(str, 'x');

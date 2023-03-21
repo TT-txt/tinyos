@@ -29,5 +29,6 @@ typedef u8 bool;
 #define high16(addr) (u16)(((addr) >> 16) & 0xFFFF)
 
 void iToA(i32, char*);
+f64 powk(f64, i64);
 
 #endif
