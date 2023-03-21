@@ -14,6 +14,8 @@ typedef u32 size_t;
 typedef u32 uintptr_t;
 typedef float f32;
 typedef double f64;
+/*string imitation*/
+typedef char* string;
 
 /* boolean recreation */
 typedef u8 bool;

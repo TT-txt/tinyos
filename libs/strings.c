@@ -95,27 +95,66 @@ char *getNthWord(char *str, char del, u32 pos) {
     return result;
 }
 
-/* ⚠️ -- UNDER CONSTRUCTION -- ⚠️ */
-/*
-char **str_split(char *str, char del)
+static void strLenBiggestWordAndWordNb(char *str, char del, u32 *size, u32 *biggest, u32 *wordNb)
 {
-    u32 memPos;
-    char **result = (char **) mallok(sizeof(char *), 1, &memPos);
-    u32 maxWordSize = biggestWord(str, del);
-    u32 i = 0;
-    char *temp = (char *) mallok(maxWordSize, 1, &memPos);
-    while (*str++ != '\0') {
-        if (*str == del) {
-            result[i] = (char *) mallok((++i) * sizeof(char), 1, &memPos);
-            mem_cpy(result[i-1], temp, i);
-            i = 0;
-            temp[0] = '\0';
+    u32 temp = 0;
+    bool wordPreviouslyFound = false;
+    *biggest = *size = *wordNb = 0;
+    do {
+        if (*str == del || *str == '\0') {
+            if (temp > *biggest)
+                *biggest = temp;
+            if (wordPreviouslyFound) 
+                *(wordNb) += 1;
+            wordPreviouslyFound = false;
+            temp = 0;
         } else {
-            temp[i++] = *str;
+            wordPreviouslyFound = true;
+            temp++;
         }
+        *(size) += 1;
+    } while (*str++ != '\0');
+}
+
+u32 str_cpy(string in, string out) 
+{
+    if (in == NULL || out == NULL)
+        return -1;
+    while (*in != '\0') {
+        *out++ = *in++;
     }
-    return result;
-}*/
+    return 0;
+}
+
+string *strSplit(string toSplit, char del)
+{
+    if (toSplit == NULL)
+        return NULL;
+    u32 splitLen, biggestWordLen, wordNb;
+    strLenBiggestWordAndWordNb(toSplit, del, &splitLen, &biggestWordLen, &wordNb);
+    string *res = NULL;
+    res = (string *) mallok(wordNb * sizeof(string));
+    u32 count, index, individualSize;
+    count = index = individualSize = 0;
+    string buff = (string) mallok(biggestWordLen * sizeof(char));
+    while (index <= splitLen && count < wordNb) {
+        if ((toSplit[index] == del && str_len(buff) != 0) || toSplit[index] == '\0') {
+            res[count] = (string) mallok(individualSize * sizeof(char));
+            if (res[count] == NULL)
+                return NULL;
+            str_cpy(buff, res[count]);
+            count += 1;
+            individualSize = 0;
+            buff[0] = '\0';
+        } else if(toSplit[index] != del) {
+            individualSize++;
+            append(buff, toSplit[index]);
+        }
+        index++;
+    }
+    freek(buff);
+    return res;
+}
 
 void hex_to_ascii(int n, char *str) {
     append(str, '0');
