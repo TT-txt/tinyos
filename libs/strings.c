@@ -133,7 +133,7 @@ static void strLenBiggestWordAndWordNb(char *str, char del, u32 *size, u32 *bigg
     } while (*str++ != '\0');
 }
 
-string *strSplit(string toSplit, char del, *wordNb)
+string *strSplit(string toSplit, char del, u32 *wordNb)
 {
     if (toSplit == NULL)
         return NULL;

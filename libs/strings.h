@@ -65,10 +65,11 @@ u32 wordCount(char *, char);
  * 
  * @param[in] toSplit the string that should be splitted
  * @param[in] del the char separating each word
+ * @param[out] wordNb the length of the returned array
  * 
  * @return string* an array containing the extracted substrings 
  */
-string *strSplit(string, char);
+string *strSplit(string, char, u32*);
 
 /**
  * @brief converts a string to a float

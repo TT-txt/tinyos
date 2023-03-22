@@ -1,16 +1,5 @@
 #include "memory.h"
 
-#define MAXEXP 32
-#define MINEXP 8
-#define MAXCOMPLETE 5
-memBlock *freePages[MAXEXP];
-i32 completePages[MAXEXP];
-static bool memInit = 0;
-static u16 pageSize = 4096;
-static u16 pageCount = 16;
-u32 blockSize = sizeof(memBlock);
-
-
 /* Global variable */
 /* This is where we have some free memory, as the kernel starts at 0x1000 */
 u32 freeMemPosition = 0x10000;
@@ -31,6 +20,29 @@ void mem_set(u8 *dest, u8 value, u32 len)
         *temp++ = value;
     }
 }
+
+#if __NEWMALLOC__ == 0
+u32 mallok(u32 size /*int align, u32 *physicalPos*/) {
+    if (freeMemPosition & 0xFFFFF000) {
+        freeMemPosition &= 0xFFFFF000;
+        freeMemPosition += 0x1000;
+    }
+    //if (physicalPos) *physicalPos = freeMemPos;
+    u32 position = freeMemPosition;
+    freeMemPosition += size;
+    return position;
+}
+#else
+
+#define MAXEXP 32
+#define MINEXP 8
+#define MAXCOMPLETE 5
+memBlock *freePages[MAXEXP];
+i32 completePages[MAXEXP];
+static bool memInit = 0;
+static u16 pageSize = 4096;
+static u16 pageCount = 16;
+u32 blockSize = sizeof(memBlock);
 
 // utilities to manage memory 
 static inline void lockMemory()
@@ -189,7 +201,7 @@ void *mallok(u32 size)
         }
     }
     ptr = (void *)((unsigned int)block + blockSize);
-    unlockMemory;
+    unlockMemory();
     return ptr;
 }
 
@@ -223,14 +235,4 @@ void freek(void *ptr)
     insertBlockAt(block, index);
     unlockMemory();
 }
-
-//u32 mallok(u32 size /*int align, u32 *physicalPos*/) {
-//    if (freeMemPosition & 0xFFFFF000) {
-//        freeMemPosition &= 0xFFFFF000;
-//        freeMemPosition += 0x1000;
-//    }
-//    //if (physicalPos) *physicalPos = freeMemPos;
-//    u32 position = freeMemPosition;
-//    freeMemPosition += size;
-//    return position;
-//}
+#endif

@@ -32,7 +32,7 @@ void userInputHandler(char *buff)
     if (wordNumber == 0) {
         printStr("No command entered...\n");
     }
-    string *words = strSplit(buff, ' ');
+    string *words = strSplit(buff, ' ', &wordNumber);
     char *firstWord = words[0];
     if(!str_cmp(firstWord, "HELP")) {
         printStr("WIKI");

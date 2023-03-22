@@ -29,7 +29,7 @@ u8 rngTable[256] = {
 	231, 172, 204, 134
 };
 
-int rngIndex = 0;
+i32 rngIndex = 0;
 
 u8 randomK()
 {

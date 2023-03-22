@@ -14,13 +14,13 @@
  * @return u8 the random
  */
 u8 randomK();
+
 /**
  * @brief get a pseudo random value between [0; 1]
  * 
  * @return f32 the random
  */
-
-f32 randK()
+f32 randK();
 
 /**
  * @brief function to reset the pseudo random generator
