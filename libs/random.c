@@ -24,10 +24,16 @@ u8 rngTable[256] = {
 
 int rngIndex = 0;
 
-u8 random_k()
+u8 randomK()
 {
     rngIndex = (rngIndex+1)&0xFF;
     return rngTable[rngIndex];
+}
+
+f32 randK()
+{
+	rngIndex = (rngIndex+1)&0xFF;
+	return rngTable[rngIndex] / 255;
 }
 
 void resetRandom() 

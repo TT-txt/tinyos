@@ -1,4 +1,14 @@
-#include "strings.h"
+#include "utils.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+f64 powk(f64 base, i64 exp)
+{
+    if (exp < 0) return 1 / powk(base, -exp);
+    else if (exp == 1) return base;
+    else if (exp == 0) return 1;
+    else return base * powk(base, exp-1);
+}
 
 u32 str_len(char *str)
 {
@@ -7,6 +17,16 @@ u32 str_len(char *str)
         result++;
     }
     return result;
+}
+
+i8 str_cpy(string in, string out) 
+{
+    if (in == NULL || out == NULL)
+        return -1;
+    while (*in != '\0') {
+        *out++ = *in++;
+    }
+    return 0;
 }
 
 i8 str_cmp(char *str1, char *str2)
@@ -32,16 +52,6 @@ void strReverse(char *str)
     }
 }
 
-u32 str_cpy(string in, string out) 
-{
-    if (in == NULL || out == NULL)
-        return -1;
-    while (*in != '\0') {
-        *out++ = *in++;
-    }
-    return 0;
-}
-
 void append(char *str, char n) 
 {
     u32 appendPoint = str_len(str);
@@ -51,57 +61,19 @@ void append(char *str, char n)
 
 u32 wordCount(char *str, char del)
 {
-    if (*str == '\0')
+    if (*str == '\0' || str == NULL)
         return 0;
     
-    u32 result = 1;
-    bool stringDetected = false;
-    while(*str++ != '\0') {
-        if (*str == '\"')
-            stringDetected = !stringDetected;
-        if (*str == del && *(str+1) != del && !stringDetected)
-            result++;
-    }
-    return result;
-}
-
-u32 biggestWord(char *str, char del)
-{
-    u32 biggest = 0;
-    u32 temp = 0;
-    while (*str++ != '\0') {
-        if (*str == del) {
-            if (temp > biggest)
-                biggest = temp;
-            temp = 0;
+    u32 result = 0;
+    bool foundWordBefore = false;
+    do {
+        if (*str == del || *str == '\0') {
+            result = foundWordBefore ? result+1 : result;
+            foundWordBefore = false;
         } else {
-            temp++;
+            foundWordBefore = true;
         }
-    }
-    return biggest;
-}
-
-char *getNthWord(char *str, char del, u32 pos) {
-    u32 startIndex = 0;
-    u32 wordNb = 0;
-    u32 size = 0;
-    /*first, we're retrieving the starting index of the wanted word*/
-    while (wordNb < pos && *(str+startIndex) != '\0') {
-        if (*(str+startIndex) == del) {
-            wordNb+=1;
-        }
-        startIndex+=1;
-    }
-    /*then, we retrieve the size of the said word*/
-    while (*(str+startIndex+size) != del && *(str+startIndex+size) != '\0') {
-        size+=1;
-    }
-    /*allocating memory to save the word*/
-    char *result = (char *) mallok(size);
-    /*copying it*/
-    for (u32 i = startIndex; i < startIndex + size; ++i) {
-        result[i - startIndex] = str[i];
-    }
+    } while(*str++ != '\0');
     return result;
 }
 
@@ -126,6 +98,7 @@ static void strLenBiggestWordAndWordNb(char *str, char del, u32 *size, u32 *bigg
     } while (*str++ != '\0');
 }
 
+
 /*
  * Function: strSplit
  * -------------------
@@ -138,24 +111,25 @@ static void strLenBiggestWordAndWordNb(char *str, char del, u32 *size, u32 *bigg
  * 
  * returns: an array of strings, each words.
 */
-string *strSplit(string toSplit, char del, *wordNb)
+string *strSplit(string toSplit, char del, u32 *wordNb)
 {
     if (toSplit == NULL)
         return NULL;
     u32 splitLen, biggestWordLen;
     *wordNb = 0;
     strLenBiggestWordAndWordNb(toSplit, del, &splitLen, &biggestWordLen, wordNb);
+    //printf("size: %d, biggest: %d, WordNb: %d\n", splitLen, biggestWordLen, wordNb);
     string *res = NULL;
-    res = (string *) mallok(*wordNb * sizeof(string));
-    u32 count, index, individualSize;
-    count = index = individualSize = 0;
-    string buff = (string) mallok(biggestWordLen * sizeof(char));
+    res = (string *) malloc(*wordNb * sizeof(string));
+    u32 count, index, individualSize= 0;
+    string buff = (string) malloc(biggestWordLen * sizeof(char));
     while (index <= splitLen && count < *wordNb) {
         if ((toSplit[index] == del && str_len(buff) != 0) || toSplit[index] == '\0') {
-            res[count] = (string) mallok(individualSize * sizeof(char));
+            res[count] = (string) malloc(individualSize * sizeof(char));
             if (res[count] == NULL)
                 return NULL;
             str_cpy(buff, res[count]);
+            //printf("Word %d, size %d, \'%s\'\n", count, individualSize, res[count]);
             count += 1;
             individualSize = 0;
             buff[0] = '\0';
@@ -165,7 +139,7 @@ string *strSplit(string toSplit, char del, *wordNb)
         }
         index++;
     }
-    freek(buff);
+    free(buff);
     return res;
 }
 
@@ -178,15 +152,6 @@ static i32 charIndex(char *str, char searched)
     return str[res] == '\0' ? -1 : res;
 }
 
-/*
- * Function: strToL
- * -------------------
- * converts from string to double
- * 
- * str: the string that should be converted
- * 
- * returns: the float contained in the string
-*/
 f64 strToL(char *str)
 {
     if (str == NULL || str[0] == '\0')
@@ -209,21 +174,10 @@ f64 strToL(char *str)
     return res;
 }
 
-/*
- * Function: hex_to_ascii
- * -------------------
- * converts the int n into hex string
- * 
- * n: what should be converted
- * str: where it should placed
- * 
- * returns: void
-*/
 void hex_to_ascii(int n, char *str) {
     append(str, '0');
     append(str, 'x');
     char zeros = 0;
-
     u32 tmp;
     int i;
     for (i = 28; i > 0; i -= 4) {
@@ -233,8 +187,14 @@ void hex_to_ascii(int n, char *str) {
         if (tmp > 0xA) append(str, tmp - 0xA + 'a');
         else append(str, tmp + '0');
     }
-
     tmp = n & 0xF;
     if (tmp >= 0xA) append(str, tmp - 0xA + 'a');
     else append(str, tmp + '0');
+}
+
+int main() {
+    string temp = "bonjour      je suis                 theodore     et  ";
+    u32 wordNb;
+    string *zouf = strSplit(temp, ' ', &wordNb);
+    return 0;
 }
