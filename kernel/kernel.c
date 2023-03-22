@@ -1,3 +1,11 @@
+/**
+ * @file kernel.c
+ * @author Théodore MARTIN
+ * @brief OS Entry point
+ * @version 0.1
+ * @date 2023-03-22
+ */
+
 #include "../drivers/screen.h"
 #include "../apps/cliTools.h"
 #include "isr.h"
@@ -8,6 +16,11 @@
 
 //https://github.com/cfenollosa/os-tutorial
 
+/**
+ * @brief the kernel entry point
+ * 
+ * @return void
+ */
 void main()
 {
     /* Inits */

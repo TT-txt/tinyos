@@ -1,3 +1,10 @@
+/**
+ * @file keyboard.c
+ * @author your name Théodore MARTIN
+ * @brief function library related to keyboard and inputs
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #include "keyboard.h"
 #include "../kernel/isr.h"
 #include "ports.h"
@@ -17,15 +24,6 @@ const char keycodeToAscii[] = { '?', '?', '1', '2', '3', '4', '5', '6',
         'H', 'J', 'K', 'L', 'M', '\'', '`', '?', '\\', 'W', 'X', 'C', 'V', 
         'B', 'N', ',', ';', '.', '/', '?', '?', '?', ' '};
 
-
-/* private functions defintions */
-static void KBCallback();
-
-/* public functions */
-void KBInit()
-{
-    regInterruptHandler(IRQ1, KBCallback);
-}
 
 /* Private functions */
 static void KBCallback()
@@ -66,4 +64,10 @@ static void KBCallback()
             printChr(chr);
         }
     }
+}
+
+/* public functions */
+void KBInit()
+{
+    regInterruptHandler(IRQ1, KBCallback);
 }

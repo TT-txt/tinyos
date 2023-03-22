@@ -24,11 +24,42 @@ typedef u8 bool;
 /* you know why... */
 #define NULL (0)
 
-/* stuff to get lsb and msb */
+/**
+ * @brief function to get the 16 lowest bits of a word
+ * 
+ * @param[in] addr the value that should be retrieved
+ * 
+ * @return u16 the lowest 16 bits
+ */
 #define low16(addr) (u16)((addr) & 0xFFFF)
+
+/**
+ * @brief function to get the 16 highest bits of a word
+ * 
+ * @param[in] addr the value that should be retrieved
+ * 
+ * @return u16 the highest 16 bits
+ */
 #define high16(addr) (u16)(((addr) >> 16) & 0xFFFF)
 
+/**
+ * @brief function converting an int to a string
+ * 
+ * @param[in] n the value that should be stringified
+ * @param[out] str the char* that will contain the result
+ * 
+ * @return void
+ */
 void iToA(i32, char*);
+
+/**
+ * @brief computes the value of the power of a number
+ * 
+ * @param[in] base the number that will be elevated
+ * @param[in] exp the exponent. It must be integer.
+ * 
+ * @return f64 the result of the power
+ */
 f64 powk(f64, i64);
 
 #endif

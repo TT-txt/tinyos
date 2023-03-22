@@ -1,3 +1,10 @@
+/**
+ * @file random.c
+ * @author Théodore MARTIN
+ * @brief function library to get pseudo random numbers
+ * @version 0.1
+ * @date 2023-03-22 
+ */
 #include "random.h"
 
 u8 rngTable[256] = {

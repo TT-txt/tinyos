@@ -1,3 +1,10 @@
+/**
+ * @file timer.c
+ * @author Théodore MARTIN
+ * @brief function library related to timers, date and time
+ * @version 0.1
+ * @date 2023-03-22
+*/
 #include "timer.h"
 #include "../drivers/ports.h"
 #include "isr.h"
@@ -5,8 +12,11 @@
 /* Global tick count */
 u32 tick = 0;
 
-/* private function declaration */
-static void callback();
+/* private functions */
+static void callback()
+{
+    tick++;
+}
 
 /* public functions */
 void initTimer(u32 f)
@@ -20,10 +30,4 @@ void initTimer(u32 f)
 
 u32 getTick() {
     return tick;
-}
-
-/* private functions */
-static void callback()
-{
-    tick++;
 }

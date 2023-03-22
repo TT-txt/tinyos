@@ -1,3 +1,11 @@
+/**
+ * @file ports.c
+ * @author Théodore MARTIN
+ * @brief function library containing everything related to ports
+ * @version 0.1
+ * @date 2023-03-22
+ */
+
 #include "ports.h"
 
 u8 portByteIn(u16 port)

@@ -1,3 +1,11 @@
+/**
+ * @file cliTools.c
+ * @author Théodore MARTIN
+ * @brief function library containing cool stuff for cli
+ * @version 0.1
+ * @date 2023-03-22
+ */
+
 #include "cliTools.h"
 #define CALCPRES 10
 

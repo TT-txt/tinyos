@@ -1,11 +1,48 @@
+/**
+ * @file screen.c
+ * @brief Function library linked to the screen & display
+ * @author Théodore MARTIN
+ * @version 0.1
+ * @date 22/04/2022
+*/
 #include "screen.h"
 
-/* private functions */
-u32 getOffset(u8 row, u8 column);
-u8 getCols(u32 offset);
-u8 getRows(u32 offset);
+/* --- private functions --- */
 
-/* general functions */
+/**
+ * @brief Get the VGA offset value for a specific row and column
+ * 
+ * @param[in] row u8 the row index
+ * @param[in] column u8 the column index
+ * @return u32 the desired offset
+ */
+static u32 getOffset(u8 row, u8 column)
+{
+    return 2 * (row * MAX_COLS + column);
+}
+
+/**
+ * @brief Get the column index associated with a VGA Offset
+ * 
+ * @param[in] offset u32 the offset
+ * @return u8 the column index
+ */
+static u8 getCols(u32 offset)
+{
+    return (offset / 2) % MAX_COLS;
+}
+
+/**
+ * @brief Get the Row index associated to a VGA Offset
+ * 
+ * @param[in] offset u32 the vga offset
+ * @return u8 the row index
+ */
+static u8 getRows(u32 offset)
+{
+    return (offset / 2) / MAX_COLS;
+}
+
 u32 getVGAOffset() {
     portByteOut(0x3D4, 14); /* asking vga control register */
     u16 position = portByteIn(0x3D5); /* retrieving the position high bytes*/
@@ -85,7 +122,6 @@ void printChrAtPos(char chr, u8 x, u8 y)
     vga[offset + 1] = WHITE_TEXT_BLACK_BACKGROUND;
 }
 
-/* print text at the next position*/
 void printStr(char *str)
 {
     u32 size = str_len(str);
@@ -100,20 +136,4 @@ void printStrAtPos(char *str, u8 x, u8 y)
     for (u32 i = 0; i < size; ++i) {
         printChrAtPos(str[i], (x + i) % MAX_COLS, y + (x + i) / MAX_COLS);
     }
-}
-
-/* private functions */
-u32 getOffset(u8 row, u8 column)
-{
-    return 2 * (row * MAX_COLS + column);
-}
-
-u8 getCols(u32 offset)
-{
-    return (offset / 2) % MAX_COLS;
-}
-
-u8 getRows(u32 offset)
-{
-    return (offset / 2) / MAX_COLS;
 }

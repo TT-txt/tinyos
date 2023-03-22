@@ -1,3 +1,10 @@
+/**
+ * @file strings.c
+ * @author Théodore MARTIN
+ * @brief function library to imitate strings.c from the stdlib
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #include "strings.h"
 
 u32 str_len(char *str)
@@ -126,18 +133,6 @@ static void strLenBiggestWordAndWordNb(char *str, char del, u32 *size, u32 *bigg
     } while (*str++ != '\0');
 }
 
-/*
- * Function: strSplit
- * -------------------
- * return an array containing the content of the string given,
- * with each word being detected as separated by the char del
- * 
- * toSplit: char *, the string that should be splitted
- * del: what is separating each word
- * wordNb: will be affected to the length of the result
- * 
- * returns: an array of strings, each words.
-*/
 string *strSplit(string toSplit, char del, *wordNb)
 {
     if (toSplit == NULL)
@@ -178,15 +173,6 @@ static i32 charIndex(char *str, char searched)
     return str[res] == '\0' ? -1 : res;
 }
 
-/*
- * Function: strToL
- * -------------------
- * converts from string to double
- * 
- * str: the string that should be converted
- * 
- * returns: the float contained in the string
-*/
 f64 strToL(char *str)
 {
     if (str == NULL || str[0] == '\0')
@@ -209,21 +195,10 @@ f64 strToL(char *str)
     return res;
 }
 
-/*
- * Function: hex_to_ascii
- * -------------------
- * converts the int n into hex string
- * 
- * n: what should be converted
- * str: where it should placed
- * 
- * returns: void
-*/
-void hex_to_ascii(int n, char *str) {
+void hexToAscii(int n, char *str) {
     append(str, '0');
     append(str, 'x');
     char zeros = 0;
-
     u32 tmp;
     int i;
     for (i = 28; i > 0; i -= 4) {
