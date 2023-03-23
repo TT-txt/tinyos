@@ -1,11 +1,20 @@
+/**
+ * @file isr.h
+ * @author Théodore MARTIN
+ * @brief headers containing everything related to the interrupt service routines
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #ifndef __ISR__
 #define __ISR__
 #include "idt.h"
 #include "../libs/utils.h"
 #include "../drivers/screen.h"
 
-/* typedefs */
-
+/**
+ * @brief representation of the asm register pushed in interrupts.asm
+ * more info inside kernel/interrupts.asm
+ */
 typedef struct {
     u32 ds;
     u32 edi, esi, ebp, esp, ebx, edx, ecx, eax; /* Pushed by pusha. */
@@ -33,7 +42,8 @@ typedef void (*ISR)(reg);
 #define IRQ14 46
 #define IRQ15 47
 
-/* ISRs & IRQs reserved for CPU exceptions */
+/*  ISRs & IRQs reserved for CPU exceptions, defined in ASM 
+    See kernel/interrupts.asm for more info*/
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -85,9 +95,43 @@ extern void irq14();
 extern void irq15();
 
 /* functions */
+/**
+ * @brief install all ISR at once with default stuff
+ * By default, if an interrupt is detected, the system will
+ * print the interrupt number, and the exception message
+ * 
+ * @return void
+ */
 void ISRInstall();
+
+/**
+ * @brief called by asm when an interrupt is detected - mostly critical cpu things
+ * 
+ * @param[in] r the register we receive the interrupt from
+ * 
+ * @return void
+ */
 void ISRHandler(reg);
+
+/**
+ * @brief sets the handler of the given ISR
+ * 
+ * @param[in] n the register number
+ * @param[in] handler the ISR that will be linked
+ * 
+ * @return void
+ */
 void regInterruptHandler(u8 , ISR);
+
+/**
+ * @brief called by the asm code - runs the defined function reacting to an IRQ
+ * 
+ * @param[in] r the register that we react to
+ * 
+ * @return void
+ */
+void IRQHandler(reg r);
+
 
 
 #endif

@@ -1,10 +1,21 @@
+/**
+ * @file idt.h
+ * @author Théodore MARTIN
+ * @brief library containing everything related to the Interrupt Descriptor Table
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #ifndef __IDT__
 #define __IDT__
 #include "../libs/utils.h"
-/* Interrupt description table - storing interrupts */
+/* Interrupt description table - storing interrupts
+ * Table containing telling the CPU where the ISR (interrupt service routines)
+ * are stored, one per interrupt.
+ * https://wiki.osdev.org/IDT
+*/
 
 #define KERNCS 0x08 /* kernel selector */
-#define IDTNB 256 /* number of interrupts */
+#define IDTNB 256 /* number of interrupts - we need 256 else the kernel may panic */
 
 typedef struct {
     u16 lOffset;
@@ -23,8 +34,19 @@ typedef struct {
 extern IDTGate IDT[IDTNB];
 extern IDTRegister IDTReg;
 
-/* functions */
+/**
+ * @brief initialize the IDT Register (or gate)
+ * 
+ * @param[in] n the gate number
+ * @param[in] handler the function handling the interrupt
+ * 
+ */
 void setIDTGate(u8, u32);
+
+/**
+ * @brief Loads the lidt command, to load the IDT
+ * https://c9x.me/x86/html/file_module_x86_id_156.html
+ */
 void setIDT();
 
 #endif

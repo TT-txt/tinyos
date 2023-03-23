@@ -1,3 +1,10 @@
+/**
+ * @file isr.c
+ * @author Théodore MARTIN
+ * @brief functions required to setup & use the interrupt service routines
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #include "isr.h"
 
 ISR interruptHandlers[IDTNB];

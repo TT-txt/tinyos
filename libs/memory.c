@@ -1,3 +1,10 @@
+/**
+ * @file memory.c
+ * @author Théodore MARTIN
+ * @brief rewritten function related to memory model to replace the one in stdlib
+ * @version 0.1
+ * @date 2023-03-22
+ */
 #include "memory.h"
 
 /* Global variable */

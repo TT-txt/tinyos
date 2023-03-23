@@ -35,7 +35,7 @@ irqWrapper:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    call IRQHandler
+    call IRQHandler; calls the handler stored in the array. See kernel/isr.c
     pop ebx  ;Different than the ISR code
     mov ds, bx
     mov es, bx
