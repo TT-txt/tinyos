@@ -27,7 +27,7 @@ Once you have your cross compiler ready, you'll just have to run `make run` to c
 ## Code documentation & Standards
 Every single function inside the code has been documented using the [doxygen](https://www.doxygen.nl/index.html) standards. You should be able to understand everything thanks to that, and the comments inside the code and the wiki.
 
-You can find the generated doxygen config file: [dconfig](./dconfig). The documentation will be generated with the `doxygen dconfig` command and will appear under the `doc` folder.
+You can find the generated doxygen config file: [dconfig](./dconfig). The documentation will be generated with the `doxygen dconfig` command and will appear under the `doc` folder. You can find the already compiled pdf [here](./doc/doc.pdf).
 
 The code has been indented using my personnal standards (sorry), to make it more readeable.
 
