@@ -49,7 +49,7 @@ void clearScreen();
  * 
  * @return void
  */
-void printChr(char);
+void putchar(char);
 
 /**
  * @brief deletes the last printed char on screen
@@ -65,7 +65,7 @@ void removeLastChar();
  * @param x the x coordinates (>0)
  * @param y the y coordinates (>0)
  */
-void printChrAtPos(char, u8, u8);
+void putcharAtPos(char, u8, u8);
 
 /**
  * @brief prints a string to the next position on screen (cursor is auto)

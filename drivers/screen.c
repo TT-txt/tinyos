@@ -75,7 +75,7 @@ void clearScreen()
     setVGAOffset(getOffset(0,0));
 }
 
-void printChr(char chr)
+void putchar(char chr)
 {
     u32 offset = getVGAOffset();
     if (chr == '\n') {
@@ -113,7 +113,7 @@ void removeLastChar()
     setVGAOffset(offset);
 }
 
-void printChrAtPos(char chr, u8 x, u8 y) 
+void putcharAtPos(char chr, u8 x, u8 y) 
 {
     i32 offset = getOffset(y, x);
     setVGAOffset(offset);
@@ -126,7 +126,7 @@ void printStr(char *str)
 {
     u32 size = str_len(str);
     for (u32 i = 0; i < size; ++i) {
-        printChr(str[i]);
+        putchar(str[i]);
     }
 }
 
@@ -134,6 +134,6 @@ void printStrAtPos(char *str, u8 x, u8 y)
 {
     u32 size = str_len(str);
     for (u32 i = 0; i < size; ++i) {
-        printChrAtPos(str[i], (x + i) % MAX_COLS, y + (x + i) / MAX_COLS);
+        putcharAtPos(str[i], (x + i) % MAX_COLS, y + (x + i) / MAX_COLS);
     }
 }

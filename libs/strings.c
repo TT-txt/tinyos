@@ -160,7 +160,7 @@ string *strSplit(string toSplit, char del, u32 *wordNb)
         }
         index++;
     }
-    freek(buff);
+    //freek(buff); //TODO: implement free
     return res;
 }
 

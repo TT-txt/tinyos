@@ -32,7 +32,7 @@ static void KBCallback()
     u8 keycode = portByteIn(0x60);
     /*iToA(keycode, temp);
     printStr(temp);
-    printChr('\n')*/
+    putchar('\n')*/
     if (keycode > SCMAX)
         return;
     if (keycode == BACKSPACE) {
@@ -42,7 +42,7 @@ static void KBCallback()
             removeLastChar();
         }
     } else if (keycode == ENTER) {
-        printChr('\n');
+        putchar('\n');
         userInputHandler(userInput);
         mem_cpy(userInput, lastCommand, userInputLength);
         lastInputLength = userInputLength;
@@ -61,7 +61,7 @@ static void KBCallback()
             userInput[userInputLength] = chr;
             //append(userInput, chr);
             userInputLength++;
-            printChr(chr);
+            putchar(chr);
         }
     }
 }

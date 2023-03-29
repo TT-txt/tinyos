@@ -8,7 +8,6 @@
 #ifndef __MEMORY__
 #define __MEMORY__
 #include "utils.h"
-#define __NEWMALLOC__ 1
 
 /**
  * @brief standard memory copy
@@ -32,7 +31,6 @@ void mem_cpy(char *, char *, u32);
  */
 void mem_set(u8 *, u8, u32);
 
-#if __NEWMALLOC__ == 0
 /**
  * @brief standard malloc
  * 
@@ -41,20 +39,14 @@ void mem_set(u8 *, u8, u32);
  * @return u32 free memory localisation
  */
 u32 mallok(u32);
-#else
-typedef struct memBlock {
-    u32 allocatedSize;
-    u32 usedSize;
-    int index;
-    struct memBlock *next;
-    struct memBlock *prev;
-    struct memBlock *splitLeft;
-    struct memBlock *splitRight;
-} memBlock;
 
-void *mallok(u32);
-void *reallok(void *, u32);
-void *callok(u32, u32);
-void freek(void *);
-#endif
+/**
+ * @brief recreation of the standard calloc
+ * 
+ * @param[in] nbObj the number of object to alloc
+ * @param[in] size the size of 1 object
+ * 
+ * @return the position of the allocated memory
+ */
+u32 callok(u32, u32);
 #endif
