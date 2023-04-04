@@ -20,7 +20,7 @@ This is my end of year project for my M1. It is now archived, but you will find 
 - [ ] Create some forms of application, to make it useable.
 
 ## How To compile
-In order to compile this project, you will need a cross compiler. The executables should be preceded `i386-elf-` (like `i386-elf-gcc` for example). You can find how to create your cross compiler on [this osDev page](https://wiki.osdev.org/GCC_Cross-Compiler) or on [this github page](https://github.com/cfenollosa/os-tutorial/tree/master/11-kernel-crosscompiler). It will be easier to do it on Linux.
+In order to compile this project, you will need a cross compiler. The executables should be preceded `i386-elf-` (like `i386-elf-gcc` for example). You can find how to create your cross compiler on [this osDev page](https://wiki.osdev.org/GCC_Cross-Compiler) or by using the given home made script [crossCompiler.sh](./crossCompiler.sh).
 
 Once you have your cross compiler ready, you'll just have to run `make run` to compile & launch the OS within QEMU. Other make commands such as `make clean` and `make debug` are also included.
 
